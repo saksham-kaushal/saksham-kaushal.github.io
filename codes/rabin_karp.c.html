@@ -1,0 +1,104 @@
+<pre style="font-size:25px">#include&ltstdio.h>
+#include&ltstring.h>
+#include&ltstdlib.h>
+#include&ltmath.h>
+#define PATLEN 30
+#define TEXTLEN 100000
+#define HASHMOD 1500000001
+
+
+unsigned int hash_fxn(char string[],int prime,int patlen)
+{
+	unsigned int hash_value = 0;
+	int i;
+	for (i=0;i&ltpatlen-1;i++)
+		{
+			hash_value+=(((int)(string[i]))*pow((float)prime,i));
+		}
+	return (unsigned int)hash_value;
+}
+
+
+unsigned int rehash_fxn(int prev_hash, char last, char new, int prime, int patlen)
+{
+	unsigned int new_hash;
+	new_hash=((prev_hash-(int)last)/prime)+((int)new)*pow((float)prime,patlen-2);
+	return (unsigned int)new_hash;
+
+}
+
+int main(void)
+{
+	char text[TEXTLEN];
+	int textlen;
+	char pattern[PATLEN];
+	int patlen;
+	printf("Enter text: ");
+	fgets(text,TEXTLEN,stdin);
+	printf("Enter pattern: ");
+	fgets(pattern,PATLEN,stdin);
+
+	textlen=strlen(text);
+	patlen=strlen(pattern);
+	
+	int radix;
+	radix=7;
+	unsigned int pattern_hash;
+	char pattern_slice[patlen];
+	strcpy(pattern_slice,pattern);
+	pattern_hash= hash_fxn(pattern_slice,radix,patlen);
+	char text_slice[patlen];
+	int i;
+	unsigned int text_hash;
+	for (i=0;i&ltpatlen-1;i++)
+	{
+		text_slice[i]=text[i];
+	}
+	text_slice[patlen-1]='\0';
+	text_hash=hash_fxn(text_slice,radix,patlen);
+
+
+
+	if (text_hash==pattern_hash)
+	{
+		printf("pattern found at index 0\n");
+	}
+	int j,flag;
+	unsigned int rehash;
+
+	for (i=1;i&lttextlen-patlen+1;i++)
+	{
+		rehash=rehash_fxn(text_hash,text[i-1],text[i+patlen-2],radix,patlen);
+		if(rehash==pattern_hash)
+			{
+				for(j=i;j&ltpatlen-1+i;j++)
+					{
+						if (text[j]==pattern[j-i])
+							{
+								flag=1;
+							}
+						else
+							{
+								flag=0;
+								break;
+							}
+					}
+
+				if (flag==1)
+					{
+						printf("pattern found at index %d\n",i);
+					}
+
+			}
+		text_hash=rehash;
+	}
+
+}
+
+
+<a href="../rabin_karp.html">Go to Algorithm</a>
+
+</pre>
+
+
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:17px"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
