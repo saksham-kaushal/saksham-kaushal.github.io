@@ -1,0 +1,337 @@
+<html><body>
+<pre style="font-size:25px">
+<a href="index.html">Index</a>
+
+#################################################################
+
+		Knuth Morris Pratt Algorithm
+
+#################################################################
+
+Analysis of Naive algorithm shows that a lot of useless comparisons
+have been made. These can be reduced by utilizing information attained
+by scanning the pattern in the pre-search phase.
+
+For example, consider searchin the following pattern in the text given
+below,
+
+Text = GTACGTCAGTACGTACGTAC
+Pattern = GTACGTAC
+
+n = length of text
+m = length of pattern
+
+	---------------------------------
+	|     x				|
+	|     |  = character mismatch	|
+	|				|
+	|     /				|
+	|     |  = character match	|
+	|				|
+	---------------------------------
+
+
+The first mismatch occurs at
+
+		GTACGTC......
+		//////x
+		|||||||
+		GTACGTAC
+
+Now analyzing the part of the algorithm already compared, GTACGT, we can
+infer that "GT" is the longest <b>proper suffix</b> of the pattern
+substring which is also a <b>proper prefix</b>. From this, we can conclude
+that substring which failed at comparison of (second occurrence of)
+character A (marked as mismatch above), contains "GT" before mismatched
+character, as is apparent in the text string above. So we can feel safe to
+carry out next comparison between third character (character next to proper
+prefix which is also a proper suffix of substring) of the pattern and the
+mismatched character in the text.
+
+		GTACGTCAGTACGTACGTAC
+		//////x
+		|||||||
+		GTACGTAC
+		~~~~~~
+
+					first mismatch shown by "x"
+
+					"GT" = proper prefix and proper
+					suffix of underlined substring.
+
+					Therefore, next comparison between
+					mismatched character of text and
+					character followed by proper prefix
+					in pattern substring.
+
+*********************************************************************
+
+		GTACGTCAGTACGTACGTAC
+		      x
+		      |
+		    GTACGTAC
+		    ~~
+					Mismatch occurred.
+
+					No proper prefix which is also a
+					proper suffix in the underlined
+					pattern substring (already matched
+					part of pattern).
+
+					Therefore, next comparison occurs
+					between mismatched character of text
+					and first character of pattern.
+
+*********************************************************************
+
+		GTACGTCAGTACGTACGTAC
+		      x
+		      |
+		      GTACGTAC
+
+					Characters mismatched. Next comparison
+					between first character of pattern and
+					next to the current character of text.
+
+*********************************************************************
+
+		GTACGTCAGTACGTACGTAC
+		       x
+		       |
+		       GTACGTAC
+
+					Similar to last step.
+
+*********************************************************************
+
+		GTACGTCAGTACGTACGTAC
+		        ////////
+		        ||||||||
+		        GTACGTAC
+			~~~~~~~~
+
+					All characters match, hence a match
+					has been found.
+
+					"GTAC" = proper prefix and proper
+					suffix of underlined (matched)
+					substring. Therefore, next comparison
+					between next character encountered in
+					text string and character followed by
+					proper prefix in pattern substring.
+
+*********************************************************************
+
+		GTACGTCAGTACGTACGTAC
+		                ////
+		                ||||
+		            GTACGTAC
+			        ~~~~
+
+					All remaining characters match, hence
+					a match has been found.
+
+					Comparison completes.
+
+*********************************************************************
+
+So, in this algorithm, we preprocess the pattern to know at each index "i"
+if the pattern[0:i-1] string has a proper suffix substring which is also a
+proper prefix substring of the the pattern[0:i-1] string.
+Then, while comparing with the text, when a mismatch occurs, we use this
+knowledge to safely skip a few comparisons by making the next comparison
+between the mismatched character of text and the character next to the
+proper prefix examined above.
+
+In programmin languages, this can be achieved by preprocessing the pattern
+and computing length of proper suffix of the pattern[0:i-1] string, for
+each character "i", which is a proper prefix for the same string, and then
+storing these values in an array of integers.
+
+For the given 21 characters long pattern string, array will be built as
+follows:
+
+	 G  T  G  T  G  C  A  G  T  G  T  G  C  A  G  T  G  T  G  G  C
+
+	[0....
+	[0  0....
+	[0  0  1....
+	[0  0  1  2....
+	[0  0  1  2  3....
+	[0  0  1  2  3  0....
+	[0  0  1  2  3  0  0....
+	[0  0  1  2  3  0  0  1....
+	[0  0  1  2  3  0  0  1  2....
+	[0  0  1  2  3  0  0  1  2  3....
+	[0  0  1  2  3  0  0  1  2  3  4....
+	[0  0  1  2  3  0  0  1  2  3  4  5....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10 11....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10 11 12....
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10 11 12  1....
+
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10 11 12  1  0]
+
+							(Array complete)
+
+Therefore, the final array comes out to be,
+
+	[0  0  1  2  3  0  0  1  2  3  4  5  6  7  8  9 10 11 12  1  0]
+
+
+Now, let us consider an example for complete algorithm.
+
+Text = GTAUGTACGTUGTAUGTAUGTAC
+Pattern = GTAUGTAC
+
+Preprocessing of pattern :
+
+	 G T A U G T A C
+	[0...
+	[0 0...
+	[0 0 0...
+	[0 0 0 0...
+	[0 0 0 0 1...
+	[0 0 0 0 1 2...
+	[0 0 0 0 1 2 3...
+
+	[0 0 0 0 1 2 3 0]			(complete array)
+
+
+*********************************************************************
+
+		GTAUGTACGTUGTAUGTAUGTAC
+		////////
+		||||||||
+		GTAUGTAC
+
+					All characters match. Therefore,
+					a match has been found.
+
+					Next comparison between next
+					character in text string (which has
+					not yet been compared) and the
+					character of the pattern at index
+					which is the number at index in
+					preprocessing array which maps to
+					last matched character.
+
+
+					 GTAUGTAC
+					 ||||||||
+					        v
+					[00001230]
+
+					Therefore, compare with character at
+					index 0, which is G.
+
+
+*********************************************************************
+
+		GTAUGTACGTUGTAUGTAUGTAC
+		        //x
+		        |||
+			GTAUGTAC
+
+					Mismatch occured.
+
+					Next comparison between mismatched
+					character of text and the character
+					of the pattern at index which is the
+					number at index in preprocessing
+					array which maps to last matched
+					character.
+
+
+					 GTAUGTAC
+					 ||||||||
+					   v    
+					[00001230]
+
+					Therefore, compare with character at
+					index 0, which is G.
+
+
+*********************************************************************
+
+		GTAUGTACGTUGTAUGTAUGTAC
+		          x
+		          |
+			  GTAUGTAC
+
+					Characters mismatch. 
+
+					Next comparison between first character
+					of the pattern and next to the current
+					character of the text.
+
+
+*********************************************************************
+
+		GTAUGTACGTUGTAUGTAUGTAC
+		           ///////x
+		           ||||||||
+			   GTAUGTAC
+
+					Mismatch occured.
+
+					Next comparison between mismatched
+					character of text and the character
+					of the pattern at index which is the
+					number at index in preprocessing
+					array which maps to last matched
+					character.
+
+
+					 GTAUGTAC
+					 ||||||||
+					       v
+					[00001230]
+
+					Therefore, compare with character at
+					index 3, which is U.
+
+
+*********************************************************************
+
+		GTAUGTACGTUGTAUGTAUGTAC
+		                  /////
+		                  |||||
+			       GTAUGTAC
+
+					All remaining characters matched.
+
+					Therefore, a match has been found.
+					Also, searching has finished since
+					we have reached the end of text.
+
+
+*********************************************************************
+
+The array built during preprocessing can be built in O(m) time. At most
+2n-1 comparisons occur. So, the algorithm takes O(n+m) time to execute.
+
+
+
+<a href="codes/kmp.py.html">Knuth-Morris-Pratt algorithm program in Python</a>
+<a href="codes/kmp.c.html">Knuth-Morris-Pratt program in C</a>
+
+References:
+1. <a href="http://www-igm.univ-mlv.fr/~lecroq/string/node8.html#SECTION0080">http://www-igm.univ-mlv.fr/~lecroq/string/node8.html#SECTION0080</a>
+
+2. <a href="http://www.inf.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm">http://www.inf.fh-flensburg.de/lang/algorithmen/pattern/kmpen.htm</a>
+
+3. <a href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm</a>
+
+4. <a href="http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/kuthMP.htm">http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/
+kuthMP.htm
+</a>
+
+
+</body>
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:17px"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
+<html>

@@ -1,0 +1,54 @@
+<pre style="font-size:25px">def preprocess_pattern(pattern,pattern_length):
+	kmp_array=[-1]*(pattern_length+1)
+	kmp_array[1]=0
+	i=0
+	j=2
+	while (j&ltpattern_length+1):
+		if (pattern[i]==pattern[j-1]):
+			kmp_array[j]=i+1
+			i+=1
+			j+=1
+		elif (pattern[i]!=pattern[j-1] and i>0):
+			i=kmp_array[i]
+		else:
+			kmp_array[j]=0
+			j+=1
+	return kmp_array
+
+def kmp_compare(text,pattern):
+	n=len(text)
+	m=len(pattern)
+	array=preprocess_pattern(pattern,m)
+	p=0
+	s=0
+	while(p+s&ltn):
+		if(text[s+p]==pattern[p]):
+			p+=1
+			if(p-1==m-1):
+				print s
+				s=p+s-array[p]
+				p=array[p]
+
+		else:
+			if(array[p]==-1):
+				p=0
+				s+=1
+			else:
+				s=p+s-array[p]
+				p=array[p]
+
+
+
+text = raw_input("Enter text: ")
+pattern = raw_input("Enter pattern to be searched: ")
+
+
+kmp_compare(text,pattern)
+
+
+
+<a href="../kmp.html">Go to Algorithm</a>
+
+</pre>
+
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:17px"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
