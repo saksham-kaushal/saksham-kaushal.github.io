@@ -1,0 +1,220 @@
+<html><body>
+<pre style="font-size:1.2rem">
+<a href="index.html">Index</a>
+
+#################################################################
+
+		Bruteforce Algorithm (Naive Algorithm)
+
+#################################################################
+
+
+The most basic of all exact string search algorithms would be the
+naive algorithm where each element of pattern to be searched is 
+compared with the elements of the text in which pattern is to be
+searched, to decide if a match occurs or not. Suppose the following
+strings,
+
+Text = AATGTACTAGAGTACT
+Pattern = GTAC
+
+The algorithm proceeds as follows:
+
+	---------------------------------
+	|     x				|
+	|     |  = character mismatch	|
+	|				|
+	|     /				|
+	|     |  = character match	|
+	|				|
+	---------------------------------
+
+
+	AATGTACTAGAGTACT
+	x
+	|
+	GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	 x
+	 |
+	 GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	  x
+	  |
+	  GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	   /
+	   |
+	   GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	   //
+	   ||
+	   GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	   ///
+	   |||
+	   GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	   ////
+	   ||||
+	   GTAC
+
+					(Pattern found)
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	    x
+	    |
+	    GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	     x
+	     |
+	     GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	      x
+	      |
+	      GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	       x
+	       |
+	       GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	        x
+	        |
+	        GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	         /
+	         |
+	         GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	         /x
+	         ||
+	         GTAC
+
+			(Second character of pattern mismatched)
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	          x
+	          |
+	          GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	          x
+	          |
+	          GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	           /
+	           |
+	           GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	           //
+	           ||
+	           GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	           ///
+	           |||
+	           GTAC
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	           ////
+	           ||||
+	           GTAC
+
+				(Match found)
+
+****************************************************************
+
+	AATGTACTAGAGTACT
+	            x
+	            |
+	            GTAC
+
+				(Procedure complete)
+
+****************************************************************
+
+Let n = length of the text string
+m = length of the pattern string
+
+In this, we compare first element of text with the first element of
+the pattern. If match does not occur, compare subsequent elements of
+text with first element of the pattern till a match occurs or till
+element n-m has been compared.
+In case a match occurs, compare subsequent elements till a mismatch 
+occurs or whole of the pattern gets matched. If somewhere in between,
+a mismatch occurs, continue with comparing the first element of the
+pattern with the element next to the element of text last compared
+with the first element of pattern. If no mismatch occurs and end of
+pattern has been encountered, return index of the element of text
+which was last compared with first element of pattern.
+
+In worst case, algorithm runs in quadratic time, which is O(mn).
+
+
+<a href="codes/naive.py.html">Bruteforce algorithm program in Python</a>
+<a href="codes/naive.c.html">Bruteforce algorithm program in C</a>
+
+References:
+1. <a href="https://en.wikipedia.org/wiki/String_searching_algorithm#Na.C3.AFve_string_search">https://en.wikipedia.org/wiki/String_searching_algorithm
+#Na.C3.AFve_string_search</a>
+
+2. <a href="http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/StringMatch/naiveStringMatch.htm">http://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/
+StringMatch/naiveStringMatch.htm</a>
+
+3. <a href="http://www-igm.univ-mlv.fr/~lecroq/string/node3.html#SECTION0030">http://www-igm.univ-mlv.fr/~lecroq/string/node3.html#SECTION0030</a>
+
+</body>
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
+<html>

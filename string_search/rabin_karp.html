@@ -1,0 +1,235 @@
+<html><body>
+<pre style="font-size:1.2rem">
+<a href="index.html">Index</a>
+
+#####################################################################
+
+			Rabin Karp Algorithm
+
+#####################################################################
+
+Careful analysisof bruteforce algorithm makes us realize that a
+lot of useless comparisons are made. Instead, hashing technique
+can be implemented to improve efficiency by reducing the number
+of comparisons.
+
+In hashing, we use a function -hash function- to map a string to
+some integer value. For example, using function 
+
+		f(x)=2x+3,
+
+and using values x("A")=2, x("B")=5 and x("C")=7, the hash function
+yields us values f("A")=7, f("B")=13 and f("C")=17. This way, A, B
+and C map to different integer values.
+
+Now on, let us consider using ASCII values of characters as their
+corresponding integer values in our hash function, i.e. 
+x(char)= ASCII value of char. This way,
+
+"L" maps to 76
+"O" maps to 79
+"W" maps to 87
+
+If we consider adding these value to get values for corresponding
+strings of these characters, the string "LOW" maps to 76+79+87=241.
+But, so does the string "OWL" map to.
+
+Such condition is called COLLISION, where 2 or more strings map to
+same value computed using hash function. To avoid collisions, we will
+later improve our hash function after understanding why collisions
+needtobe reduced.
+
+In Rabin-Karp algorithm, we compute the hash of the pattern string
+having length m. Now, we begin by computing hash value for first m
+characters of the text (indexes 0 to m-1). If the hash of this text
+slice of length same as that of pattern is equal tohash of pattern,
+we compare each corresponding element of both strings to see if they
+match and return the index if they do. If the hashes are not equal,
+we compute the hash of elements of text from index 1 to m (assuming
+indexes of pattern start at 0 and end at m-1). ifthe hashes still do
+not equate, we compute hash for elemts of indexes 2 to m+1, then 
+3 to m+3 and so on, till a match occurs or searching text string
+finishes.
+
+The computation of subsequent hash values can be compute using
+previously computed hash values by implementing the concept of rolling
+hash.This can be done by subtracting some precalculated value from
+privious hash and adding the value corresponding to new element.
+For example,
+	in SAME
+		SAM maps to 83+65+77=225
+		AME maps to value computes as follows:
+			hash("AME")= hash("SAM")-hash(S)+hash(E)
+				   = 225-83+69 = 211
+
+When comparing two hashes, if the hashes are equal, we compare the 
+strings. This is done because collisions occur. If somehow we are
+able to devise a simple collision-free hash function, we do not need
+to compare the strings. But in reality, collisions are natural (often
+because of huge amount of data accompanied by memory constraints). So,
+we try to reduce them without compromising the simplicity of hash
+function, so that not too much of processing power goes is consumed
+in its computation. To reduce collisions, we can multiply each value
+used to compute hashwith some prime number raised to the power
+(m-index in pattern).
+
+Revisiting the example of "OWL" and "LOW" with this approach and taking
+the value of prime number equal to 7,
+
+	LOW maps to 76 + 79x7 + 87x7x7 = 4892
+	OWL maps to 79 + 87x7 + 76x7x7 = 4412.
+
+Therefore, collision has been avoided in this case.
+
+Though less often, collisions might still occur. So, we still need to
+compare strings once their hashes come out to be equal.
+
+Now, suppose we need to calculate 3 character hash in string "SLOWLY".
+Taking 7 as the prime number, we do so as follows,
+
+	SLO maps to 83 + 76x7 + 79x7x7 = 4486
+
+	LOW maps to ((4486-83)/7) + 87x7x7 = 4892 	
+						(x(S)=83 and x(W)=87)
+
+	OWL maps to ((4892-76)/7) + 76x7x7 = 4412	
+						(x(L)=76)
+
+	WLY maps to ((4412-79)/7) + 89x7x7 = 4980	
+						(x(O)=79 and x(Y)=89)
+
+
+Let us now consider an example.
+
+	---------------------------------
+	|     x				|
+	|     |  = character mismatch	|
+	|				|
+	|     /				|
+	|     |  = character match	|
+	|				|
+	---------------------------------
+
+
+Pattern = GTAC
+Text = AATGTACTAGAGTACT
+
+m = length of pattern
+n = length of text
+
+Hash(pattern = GTAC) = 71 + 84x7 + 65x7x7 + 67x7x7x7 = 26825
+
+*********************************************************************
+
+Hash(first text slice of length m = AATG) = 65 + 65x7 + 84x7x7 +
+					    71x7x7x7 = 28989
+
+*********************************************************************
+
+Hash(text slice = ATGT) = ((28989-65)/7) + 84x7x7x7 = 32944
+
+*********************************************************************
+
+Hash(text slice = TGTA) = ((32944-65)/7) + 65x7x7x7 = 26992
+
+*********************************************************************
+
+Hash(text slice = GTAC) = ((26992-84)/7) + 67x7x7x7 = 26825
+
+Hash(text slice = GTAC) = Hash (pattern)
+=&gt match might occur. So, compare the strings character by character.
+
+		GTAC	text slice
+		////
+		||||
+		GTAC	pattern
+
+
+Since all characters match, an exact match has been found.
+*********************************************************************
+
+Hash(text slice = TACT) = ((26825-71)/7) + 84x7x7x7 = 32634
+
+*********************************************************************
+
+Hash(text slice = ACTA) = ((32634-84)/7) + 65x7x7x7 = 26945
+
+*********************************************************************
+
+Hash(text slice = CTAG) = ((26945-65)/7) + 71x7x7x7 = 28193
+
+*********************************************************************
+
+Hash(text slice = TAGA) = ((28193-67)/7) + 65x7x7x7 = 26313
+
+*********************************************************************
+
+Hash(text slice = AGAG) = ((26313-84)/7) + 71x7x7x7 = 28100
+
+*********************************************************************
+
+Hash(text slice = GAGT) = ((28100-65)/7) + 84x7x7x7 = 32817
+
+*********************************************************************
+
+Hash(text slice = AGTA) = ((32817-71)/7) + 65x7x7x7 = 26973
+
+*********************************************************************
+
+Hash(text slice = GTAC) = ((26973-65)/7) + 67x7x7x7 = 26825
+
+Hash(text slice = GTAC) = Hash (pattern)
+=&gt match might occur. So, compare the strings character by character.
+
+		GTAC	text slice
+		////
+		||||
+		GTAC	pattern
+
+
+Since all characters match, an exact match has been found.
+
+*********************************************************************
+
+Hash(text slice = TACT) = ((26825-71)/7) + 84x7x7x7 = 32634
+
+*********************************************************************
+
+
+In case the length of pattern is large, hash values also become very
+large. This can lead to memory consumption issues during computation.
+To overcome this we can limit the maximum value of hash by dividing
+all hash values from that limit and assigning the remainder as the
+actual hash value, i.e.
+
+
+	final hash value = computed hash % max limit of hash
+
+
+Mark that this will increase the probability of encountering collisions.
+
+
+
+The average case running time of this algorithm would be O(m+n).
+O(m) is the time consumed in preprocessing the pattern, i.e.
+calculating hash(pattern).
+This algorithm is faster than naive algorithm primarily due to reduced
+number of comparisons. Simplicity of the hash function should not be
+compromised at the cost of improving the function to reduce collisions.
+
+
+<a href="codes/rabin_karp.py.html">Rabin Karp algorithm program in Python</a>
+<a href="codes/rabin_karp.c.html">Rabin Karp algorithm program in C</a>
+
+References:
+1. <a href="http://www-igm.univ-mlv.fr/~lecroq/string/node5.html#SECTION0050">http://www-igm.univ-mlv.fr/~lecroq/string/node5.html#SECTION0050</a>
+
+2. <a href="https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm">https://en.wikipedia.org/wiki/Rabin%E2%80%93Karp_algorithm</a>
+
+2. <a href="https://brilliant.org/wiki/rabin-karp-algorithm/">https://brilliant.org/wiki/rabin-karp-algorithm/
+</a>
+
+</pre>
+</body>
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
+</html>

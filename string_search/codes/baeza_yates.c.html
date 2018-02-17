@@ -1,0 +1,54 @@
+<pre style="font-size:1.2rem">#include&ltstdio.h>
+#include&ltstring.h>
+#define PATLEN 30
+#define TEXTLEN 100000
+
+int main(void)
+{
+	char text[TEXTLEN];
+	int textlen;
+	char pattern[PATLEN];
+	int patlen;
+	printf("Enter text: ");
+	fgets(text,TEXTLEN,stdin);
+	printf("Enter pattern: ");
+	fgets(pattern,PATLEN,stdin);
+
+	textlen=strlen(text);
+	patlen=strlen(pattern);
+	
+	int vector[patlen];
+	vector[0]=0;
+
+	int x;
+	for (x=1;x&ltpatlen;x++)
+	{
+		vector[x]=1;
+	}
+	
+	int i,j;
+
+	for(i=1;i&lttextlen;i++)
+	{
+		vector[0]=0;
+		for(j=patlen-1;j>0;j--)
+		{
+			vector[j]=vector[j-1] || (!(text[i-1]==pattern[j-1]));
+		}
+
+		if(vector[patlen-1]==0)
+		{
+			printf("occurence at %d\n",(i-(patlen-1)));
+		}
+	}
+
+
+}
+
+
+<a href="../baeza_yates.html">Go to Algorithm</a>
+
+</pre>
+
+
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>

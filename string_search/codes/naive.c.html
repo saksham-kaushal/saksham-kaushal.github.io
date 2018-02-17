@@ -1,0 +1,48 @@
+<pre style="font-size:1.2rem">#include&ltstdio.h>
+#include&ltstring.h>
+#define PATLEN 30
+#define TEXTLEN 100000
+
+int main(void)
+{
+	char text[TEXTLEN];
+	int textlen;
+	char pattern[PATLEN];
+	int patlen;
+	printf("Enter text: ");
+	fgets(text,TEXTLEN,stdin);
+	printf("Enter pattern: ");
+	fgets(pattern,PATLEN,stdin);
+
+	textlen=strlen(text);
+	patlen=strlen(pattern);
+	
+	int i,j,x;
+
+	for(i=0;i&lttextlen-patlen+1;i++)
+	{
+		x=i;
+		
+		for(j=0;j&ltpatlen;j++)
+		{
+			if (pattern[j]==text[x])
+				{x++;}
+			else
+				{break;}
+			
+			if (x-i==patlen-1)
+				{printf("Occurence at index %d\n",i);}
+		}
+	}
+	
+
+
+	return(0);
+}
+
+<a href="../brute_force.html">Go to Algorithm</a>
+
+</pre>
+
+
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>

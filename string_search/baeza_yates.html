@@ -1,0 +1,374 @@
+<html><body>
+<pre style="font-size:1.2rem">
+<a href="index.html">Index</a>
+
+#################################################################
+
+		Baeza Yates-Gonnet Algorithm
+	Bitap Algorithm (Shift and add / Shift Or Algorithm)
+
+#################################################################
+
+In this method, instead of reducing the comparisons, we try to speed
+them up. 
+We define a <b>vector</b> which holds information about more than one
+comparisons. The vector <b>S</b> is comprised of m elements, where m
+is the length of pattern string. n values of vector <b>S</b>,
+S1, S2, S3... Sn are computed, where n is the length of text string.
+
+For j<sup>th</sup> element of S(i),
+
+		S(i)[j] = 0	if text[(i-j+1)...i] = pattern[1...j]
+
+		      = 1	otherwise
+
+
+If S(i)[m] = 0, a complete match is found at i-m+1 index, where values of
+i and m start from 1. This can be visualized as follows:
+
+Text = GTAUGTACGTUGTAU
+Pattern = GTAU
+
+
+		---------------------------------
+		|     				|
+		|    <span style = "color:blue">blue</span>  = match		|
+		|				|
+		|    <span style = "color:red">red</span>  = mismatch		|
+		|     				|
+		|    black = not examined	|
+		|	   (index not in range)	|
+		---------------------------------
+
+
+		GTAUGTACGTUGTAU
+	        <span style = "color:blue">G</span>						S1[1]=0
+	       GT						S1[2]=1
+	      GTA						S1[3]=1
+	     GTAU						S1[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	         <span style = "color:red">G</span>						S2[1]=1
+	        <span style = "color:blue">GT</span>						S2[2]=0
+	       GTA						S2[3]=1
+	      GTAU						S2[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	          <span style = "color:red">G</span>						S3[1]=1
+	         <span style = "color:red">GT</span>						S3[2]=1
+	        <span style = "color:blue">GTA</span>						S3[3]=0
+	       GTAU						S3[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	           <span style = "color:red">G</span>						S4[1]=1
+	          <span style = "color:red">GT</span>						S4[2]=1
+	         <span style = "color:red">GTA</span>						S4[3]=1
+	        <span style = "color:blue">GTAU</span>						S4[4]=0
+
+					S4[m] = 0,therefore match found.
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	            <span style = "color:blue">G</span>						S5[1]=0
+	           <span style = "color:red">GT</span>						S5[2]=1
+	          <span style = "color:red">GTA</span>						S5[3]=1
+	         <span style = "color:red">GTAU</span>						S5[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	             <span style = "color:red">G</span>						S6[1]=1
+	            <span style = "color:blue">GT</span>						S6[2]=0
+	           <span style = "color:red">GTA</span>						S6[3]=1
+	          <span style = "color:red">GTAU</span>						S6[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	              <span style = "color:red">G</span>						S7[1]=1
+	             <span style = "color:red">GT</span>						S7[2]=1
+	            <span style = "color:blue">GTA</span>						S7[3]=0
+	           <span style = "color:red">GTAU</span>						S7[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	               <span style = "color:red">G</span>					S8[1]=1
+	              <span style = "color:red">GT</span>					S8[2]=1
+	             <span style = "color:red">GTA</span>					S8[3]=1
+	            <span style = "color:red">GTAU</span>					S8[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                <span style = "color:blue">G</span>					S9[1]=0
+	               <span style = "color:red">GT</span>					S9[2]=1
+	              <span style = "color:red">GTA</span>					S9[3]=1
+	             <span style = "color:red">GTAU</span>					S9[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                 <span style = "color:red">G</span>					S10[1]=1
+	                <span style = "color:blue">GT</span>					S10[2]=0
+	               <span style = "color:red">GTA</span>					S10[3]=1
+	              <span style = "color:red">GTAU</span>					S10[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                  <span style = "color:red">G</span>					S11[1]=1
+	                 <span style = "color:red">GT</span>					S11[2]=1
+	                <span style = "color:red">GTA</span>					S11[3]=1
+	               <span style = "color:red">GTAU</span>					S11[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                   <span style = "color:blue">G</span>					S12[1]=0
+	                  <span style = "color:red">GT</span>					S12[2]=1
+	                 <span style = "color:red">GTA</span>					S12[3]=1
+	                <span style = "color:red">GTAU</span>					S12[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                    <span style = "color:red">G</span>					S13[1]=1
+	                   <span style = "color:blue">GT</span>					S13[2]=0
+	                  <span style = "color:red">GTA</span>					S13[3]=1
+	                 <span style = "color:red">GTAU</span>					S13[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                     <span style = "color:red">G</span>					S14[1]=1
+	                    <span style = "color:red">GT</span>					S14[2]=1
+	                   <span style = "color:blue">GTA</span>					S14[3]=0
+	                  <span style = "color:red">GTAU</span>					S14[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+	                      <span style = "color:red">G</span>					S15[1]=1
+	                     <span style = "color:red">GT</span>					S15[2]=1
+	                    <span style = "color:red">GTA</span>					S15[3]=1
+	                   <span style = "color:blue">GTAU</span>					S15[4]=0
+
+					S15[m] = 0,therefore match found.
+
+*********************************************************************
+
+So,this is how the algorithm basically works. But not yet have we increased
+the comparison speed. For that, we need to reduce the time required to
+compute the S(i) vectors. This is where "shift-OR" technique comes in
+to reduce S(i+1) computation time using S(i).
+
+For this, make length of S(i) array equal to m+1 where S(i)[0]=0 always.
+
+Now for each computation, we check for 2 conditions:
+
+	=&gt  S(i-1)[j-1] = 0
+	=&gt  pattern[j] = text[i]
+
+If both are true, S(i)[j] = 0, and 1 otherwise. Therefore, bitwise OR
+operator can be used to evaluate.
+If S(i)[m] = 0, exact match is found at index i-m, where indexes start
+from 1.
+
+
+From this, we can say that:
+
+	=&gt	S(0)[j] = 0	if j = 0
+			= 1	otherwise
+
+	=&gt	S(i)[0] = 0	for all values of i
+
+
+Considering the same example taken above,
+
+		-----------------------------------------
+		|					|
+		|    (char = char) = 0	if True		|
+		|		   = 1	if False	|
+		|					|
+		-----------------------------------------
+
+
+		GTAUGTACGTUGTAU
+							S0[0]=0
+	       G					S0[1]=1
+	      GT					S0[2]=1
+	     GTA					S0[3]=1
+	    GTAU					S0[4]=1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S1[0]=0
+	        G					S1[1]=S0[0] OR "G"="G" = 0
+	       GT					S1[2]=S0[1] OR "G"="T" = 1
+	      GTA					S1[3]=S0[2] OR "G"="A" = 1
+	     GTAU					S1[4]=S0[3] OR "G"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S2[0]=0
+	         G					S2[1]=S1[0] OR "T"="G" = 1
+	        GT					S2[2]=S1[1] OR "T"="T" = 0
+	       GTA					S2[3]=S1[2] OR "T"="A" = 1
+	      GTAU					S2[4]=S1[3] OR "T"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S3[0]=0
+	          G					S3[1]=S2[0] OR "A"="G" = 1
+	         GT					S3[2]=S2[1] OR "A"="T" = 1
+	        GTA					S3[3]=S2[2] OR "A"="A" = 0
+	       GTAU					S3[4]=S2[3] OR "A"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S4[0]=0
+	           G					S4[1]=S3[0] OR "U"="G" = 1
+	          GT					S4[2]=S3[1] OR "U"="T" = 1
+	         GTA					S4[3]=S3[2] OR "U"="A" = 1
+	        GTAU					S4[4]=S3[3] OR "U"="U" = 0
+
+					S(4)[4] = 0, Therefore match at index 4-4=0
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S5[0]=0
+	            G					S5[1]=S4[0] OR "G"="G" = 0
+	           GT					S5[2]=S4[1] OR "G"="T" = 1
+	          GTA					S5[3]=S4[2] OR "G"="A" = 1
+	         GTAU					S5[4]=S4[3] OR "G"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S6[0]=0
+	             G					S6[1]=S5[0] OR "T"="G" = 1
+	            GT					S6[2]=S5[1] OR "T"="T" = 0
+	           GTA					S6[3]=S5[2] OR "T"="A" = 1
+	          GTAU					S6[4]=S5[3] OR "T"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S7[0]=0
+	              G					S7[1]=S6[0] OR "A"="G" = 1
+	             GT					S7[2]=S6[1] OR "A"="T" = 1
+	            GTA					S7[3]=S6[2] OR "A"="A" = 0
+	           GTAU					S7[4]=S6[3] OR "A"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S8[0]=0
+	               G				S8[1]=S7[0] OR "C"="G" = 1
+	              GT				S8[2]=S7[1] OR "C"="T" = 1
+	             GTA				S8[3]=S7[2] OR "C"="A" = 1
+	            GTAU				S8[4]=S7[3] OR "C"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S9[0]=0
+	                G				S9[1]=S8[0] OR "G"="G" = 0
+	               GT				S9[2]=S8[1] OR "G"="T" = 1
+	              GTA				S9[3]=S8[2] OR "G"="A" = 1
+	             GTAU				S9[4]=S8[3] OR "G"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S10[0]=0
+	                 G				S10[1]=S9[0] OR "T"="G" = 1
+	                GT				S10[2]=S9[1] OR "T"="T" = 0
+	               GTA				S10[3]=S9[2] OR "T"="A" = 1
+	              GTAU				S10[4]=S9[3] OR "T"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S11[0]=0
+	                  G				S11[1]=S10[0] OR "U"="G" = 1
+	                 GT				S11[2]=S10[1] OR "U"="T" = 1
+	                GTA				S11[3]=S10[2] OR "U"="A" = 1
+	               GTAU				S11[4]=S10[3] OR "U"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S12[0]=0
+	                   G				S12[1]=S11[0] OR "G"="G" = 0
+	                  GT				S12[2]=S11[1] OR "G"="T" = 1
+	                 GTA				S12[3]=S11[2] OR "G"="A" = 1
+	                GTAU				S12[4]=S11[3] OR "G"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S13[0]=0
+	                    G				S13[1]=S12[0] OR "T"="G" = 1
+	                   GT				S13[2]=S12[1] OR "T"="T" = 0
+	                  GTA				S13[3]=S12[2] OR "T"="A" = 1
+	                 GTAU				S13[4]=S12[3] OR "T"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S14[0]=0
+	                     G				S14[1]=S13[0] OR "A"="G" = 1
+	                    GT				S14[2]=S13[1] OR "A"="T" = 1
+	                   GTA				S14[3]=S13[2] OR "A"="A" = 0
+	                  GTAU				S14[4]=S13[3] OR "A"="U" = 1
+
+*********************************************************************
+
+		GTAUGTACGTUGTAU
+							S15[0]=0
+	                      G				S15[1]=S14[0] OR "U"="G" = 1
+	                     GT				S15[2]=S14[1] OR "U"="T" = 1
+	                    GTA				S15[3]=S14[2] OR "U"="A" = 1
+	                   GTAU				S15[4]=S14[3] OR "U"="U" = 0
+
+					S(15)[4] = 0, Therefore match at index 15-4=11
+
+*********************************************************************
+
+Bit operation on x bits can be done in linear time, where x is the word
+size,i.e. Shift and OR operations take O(1) time each. Hence, speeding up
+the comparisons when compared to naive algorithm. Search takes up 
+O(mn/x) time (which is O(n) for constant pattern length less than and
+approximately equal to x). So, the algorithms is efficient for small values
+of m,i.e. m&ltx.
+
+
+
+<a href="codes/baeza_yates.py.html">Bitap algorithm program in Python</a>
+<a href="codes/baeza_yates.c.html">Bitap algorithm program in C</a>
+
+References:
+1. <a href="http://www-igm.univ-mlv.fr/~lecroq/string/node6.html#SECTION0060">http://www-igm.univ-mlv.fr/~lecroq/string/node6.html#SECTION0060</a>
+
+2. <a href="http://www.cs.au.dk/~cstorm/courses/StrAlg_f13/slides/Shift-and-OR.pdf">http://www.cs.au.dk/~cstorm/courses/StrAlg_f13/slides/Shift-and-OR.pdf</a>
+
+3. <a href="http://www.akira.ruc.dk/~keld/teaching/algoritmedesign_f08/Artikler/09/Baeza92.pdf">http://www.akira.ruc.dk/~keld/teaching/algoritmedesign_f08/Artikler/09/Baeza92.pdf</a>
+
+4. <a href="https://en.wikipedia.org/wiki/Bitap_algorithm">https://en.wikipedia.org/wiki/Bitap_algorithm</a>
+
+</body>
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
+<html>
