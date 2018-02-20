@@ -1,0 +1,59 @@
+<html><body>
+<pre style="font-size:1.2rem">
+<a href="./index.html">Index</a>
+
+#################################################################
+
+			Newton Raphson Method
+
+#################################################################
+
+
+One quality, bisection method is notorious for is its order of
+convergence. Linear convergence is very slow for calculation
+of roots in most cases and Newton Raphson method is the best known 
+alternative when speedup is the ultimate requirement. This method's
+quadratic convergence can be linked to its involvement of the 
+function's derivative in its calculation, which is known to 
+converge much faster than the function itself.
+
+A single initial guess is made for the valie of root x of function 
+f(x).Along with f(x), its derivative (f'(x)) is also calculated. Then
+value of x for i<sup>th</sup> iteration is calculated using the 
+formula
+		x<sub>i</sub> = x<sub>i-1</sub>-(<i>f(x)</i>/<i>f'(x)</i>)
+	
+A smart initial guess, well within the limits of the function can 
+help thi method in converging very fast.
+
+Visually, tangent line is drawn at the curve on initial guess of x=x<sub>0</sub>.
+The point at which the tangent line intersects the x-axis becomes 
+the value of x<sub>1</sub> for next iteration, and so on. Computationally, 
+the value of x<sub>0</sub> is guessed and x<sub>i</sub><sup>th</sup> values are calculated
+using the formula given above till a value of x is close enough to 
+the value of one of the roots of the equation within permissible 
+error/approximation limits.
+
+Suppose, f(x) = sin(x)
+
+In the graph given below, point marked red is the value of x<sub>i-1</sub> and 
+point marked blue (cyan) is the value of x<sub>i</sub>. The straight green 
+line is the tangent to the curve f(x)=sin(x) at x=x<sub>i-1</sub> for ith iteration.<br>
+<a href="./plots/plot2_1.png"><img src="./plots/plot2_1.png"></a><br>The above plot 1.1 shows the first iteration of the algorithm. 
+x<sub>0</sub> is the initial guess of pi/3. This gives us the 
+abscissa of x<sub>1</sub> equal to 0.68. Since this is not close 
+enough to the root, the program proceeds towards next iteration.<br>
+<a href="./plots/plot2_2.png"><img src="./plots/plot2_2.png"></a><br>
+
+
+
+						can be generalized to argand plane for complex nums
+
+
+
+<i style="font-size:1.0rem">All graphs are plotted using python matplotlib. See <a href="./plot_codes/">plots index</a> 
+for programs
+</pre>
+</body>
+<footer style="bottom:0;position:fixed;background-color:#ffffff;font-size:0.9rem"><i>Saksham Kaushal, contact at sakshamk.710@gmail.com</i></footer>
+<html>
