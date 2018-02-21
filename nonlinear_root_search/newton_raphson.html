@@ -39,13 +39,47 @@ Suppose, f(x) = sin(x)
 In the graph given below, point marked red is the value of x<sub>i-1</sub> and 
 point marked blue (cyan) is the value of x<sub>i</sub>. The straight green 
 line is the tangent to the curve f(x)=sin(x) at x=x<sub>i-1</sub> for ith iteration.<br>
-<a href="./plots/plot2_1.png"><img src="./plots/plot2_1.png"></a><br>The above plot 1.1 shows the first iteration of the algorithm. 
+<a href="./plots/plot2_1.png"><img src="./plots/plot2_1.png"></a><br>
+The above plot 1.1 shows the first iteration of the algorithm. 
 x<sub>0</sub> is the initial guess of pi/3. This gives us the 
 abscissa of x<sub>1</sub> equal to 0.68. Since this is not close 
 enough to the root, the program proceeds towards next iteration.<br>
 <a href="./plots/plot2_2.png"><img src="./plots/plot2_2.png"></a><br>
+Now, x<sub>2</sub> is considered for evaluation in the next iteration of the 
+algorithm. As, can be seen, convergence towards the root is faster 
+than in case of bisection method.
 
+After further iterations in a similar manner, value of f(x<sub>i</sub>) approaches 
+zero. When its value gets close enough to zero, within permissible 
+limits of approximation of result (provided by user), the value of
+that x<sub>i</sub> is returned as value of a root of the function.
 
+<b>Drawbacks:</b>
+
+1. Fast convergence comes at a price of uncertainity of finding 
+the root. Bisection method was certain to give value of a root 
+provided its presence in the interval. But, evaluation of function 
+can fly off the limits in certain cases of Newton Raphson method. 
+For the above example, suppose the initial guess was x=pi/2. This 
+case is depicted in the following graph.<br>
+<a href="./plots/plot2_3.png"><img src="./plots/plot2_3.png"></a><br>
+Here, value of x<sub>1</sub> cannot be determined for next iteration, thus failing 
+the algorithm.
+
+2. A bad choice of value of x can lead to repetition in values of x 
+in the subsequent iterations. This way, we never get the value of root 
+because we remain stuck in the loop, as shown in graph.<br>
+<a href="./plots/plot2_4.png"><img src="./plots/plot2_4.png"></a><br>
+
+An alternative to avoid such situations is to make a combined use of 
+bisection and Newton Raphson method. Bisection method is used to 
+determine the bounds for value of x. Whenever, Newton Raphson method 
+fails to get a <i>new</i> value of x within those bounds, bisection method 
+is applied to get new bounds for Newton Raphson method to operate. 
+A <i>new</i> value is required to avoid returning of same two roots alternately. 
+Although this ascertains that a root will be returned if present, the
+execution time of this algorithm will be slower than that of ordinary 
+Newton Raphson method.
 
 						can be generalized to argand plane for complex nums
 
