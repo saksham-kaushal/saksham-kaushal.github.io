@@ -22,7 +22,7 @@ def newton(a,maxiter,tolerance,roots):
 			x-=f(x)/f_dev(x)
 		iters = i
 		for root in roots:
-			if (x.real-root.real<=tolerance.real and x.imag-root.imag<=tolerance.imag):
+			if (abs(x.real-root.real)<=tolerance.real and abs(x.imag-root.imag)<=tolerance.imag):
 				return root , iters
 	return None, maxiter
 
