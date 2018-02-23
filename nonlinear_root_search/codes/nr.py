@@ -10,7 +10,7 @@ def newton(a,maxiter,tolerance):
 	for i in range(maxiter):
 		if (f_dev(x)==0):
 			raise ZeroDivisionError
-			return None,i
+#			return None,i
 		
 		x-=f(x)/f_dev(x)
 		if (abs(x.real-x_prev.real)<=abs(tolerance.real) and abs(x.imag-x_prev.imag)<=abs(tolerance.imag)):
@@ -20,7 +20,7 @@ def newton(a,maxiter,tolerance):
 	
 if __name__ == '__main__':
 	m=20+100j
-	maxiter = 30
+	maxiter = 50
 	tolerance = 0.00001+0.00001j
 	root,i=newton(m,maxiter,tolerance)
 	print(root,i)
