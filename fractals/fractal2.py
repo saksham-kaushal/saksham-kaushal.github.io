@@ -49,4 +49,4 @@ if __name__=='__main__':
 		dot+=each_diff
 		print(x)
 		
-	plt.savefig('frac2img400x400.jpg')
+	plt.savefig('frac2img400x400.png')
